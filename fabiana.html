@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Un mensaje especial</title>
+    <link rel="stylesheet" href="fabiana.css">
+</head>
+<body>
+    <div class="container">
+        <div class="card" id="phase-1">
+            <h1>Hola</h1>
+            <div class="message">
+                <p>Realmente no se expresar mis emociones muy bien, sobretodo en este tipo de situaciones así que lo haré en el lenguaje que mejor me sale, programación y jueguitos tontos que me gustan hacerte.</p>
+                <p>No sé si realmente te interese lo que tengo por decirte, así que puedes elegir no hacer nada o puedes continuar y al final saber.</p>
+                <p class="highlight">Tú nunca me la pusiste fácil así que yo tampoco lo haré esta vez</p>
+            </div>
+            <div class="button-container">
+                <button class="exit-btn">Mejor no</button>
+                <button class="continue-btn">Continuar</button>
+            </div>
+        </div>
+
+        <div class="card hidden" id="phase-2">
+            <h2>Primera prueba</h2>
+            <div class="message">
+                <p class="riddle">¿Cuál es la primera canción que me recuerda a ti?</p>
+                <div class="options-container">
+                    <button class="option-btn">Promesas sobre el bidet</button>
+                    <button class="option-btn">Desenfocao</button>
+                    <button class="option-btn">Interlude</button>
+                    <button class="option-btn">Ninguna de las anteriores</button>
+                </div>
+            </div>
+            <p class="result-message"></p>
+        </div>
+
+        <div class="card hidden" id="phase-3">
+            <h2>Segunda prueba</h2>
+            <div class="message">
+                <p class="riddle">Okey, estaba fácil, ahora una que te cueste más. ¿Cuál es el nombre de mi perrita?</p>
+                <input type="text" class="answer-input" placeholder="Escribe tu respuesta...">
+            </div>
+            <button class="check-btn">Verificar</button>
+            <p class="result-message"></p>
+        </div>
+
+        <div class="card hidden" id="phase-4">
+            <h2>Tercera prueba</h2>
+            <div class="message">
+                <p class="riddle">Ahora, tienes que usar tu cabeza, si me escribes te daré una pista y eso es todo, tienes que buscar bien, solo tienes 3 intentos</p>
+                <div class="hangman-container">
+                    <div class="word-display">_ _ _   _ _ _ _ _   _ _ _   _   _ _   _ _ _ _ _ _</div>
+                    <input type="text" class="answer-input-phase4" placeholder="Escribe tu respuesta completa...">
+                    <p class="attempts-left">❤️ ❤️ ❤️</p>
+                    <p class="hint-message"></p>
+                </div>
+            </div>
+            <button class="check-btn-phase4">Verificar</button>
+            <p class="result-message"></p>
+        </div>
+
+        <div class="card hidden" id="phase-5">
+            <h2>Fase Final</h2>
+            <div class="message">
+                <p class="riddle">¿Estás lista? puedes dejarlo ahí si deseas</p>
+                <div class="button-container">
+                    <button class="exit-btn-final">Mejor lo dejo aquí</button>
+                    <button class="continue-btn-final">Continuar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const phase1 = document.getElementById('phase-1');
+        const phase2 = document.getElementById('phase-2');
+        const phase3 = document.getElementById('phase-3');
+        const phase4 = document.getElementById('phase-4');
+        const phase5 = document.getElementById('phase-5');
+        const continueBtn = document.querySelector('.continue-btn');
+        const exitBtn = document.querySelector('.exit-btn');
+        const optionBtns = document.querySelectorAll('.option-btn');
+        const checkBtn = document.querySelector('.check-btn');
+        const input = document.querySelector('.answer-input');
+        const resultMessages = document.querySelectorAll('.result-message');
+        const checkBtnPhase4 = document.querySelector('.check-btn-phase4');
+        const inputPhase4 = document.querySelector('.answer-input-phase4');
+        const attemptsLeft = document.querySelector('.attempts-left');
+        const hintMessage = document.querySelector('.hint-message');
+        let attempts = 3;
+
+        exitBtn.addEventListener('click', () => {
+            phase1.innerHTML = '<h1>Está bien, espero seas feliz y supongo que acá acaba todo, te quiero</h1>';
+        });
+
+        continueBtn.addEventListener('click', () => {
+            phase1.classList.add('fade-out');
+            setTimeout(() => {
+                phase1.classList.add('hidden');
+                phase2.classList.remove('hidden');
+                phase2.classList.add('fade-in');
+            }, 500);
+        });
+
+        optionBtns.forEach(button => {
+            button.addEventListener('click', () => {
+                if (button.textContent === 'Interlude') {
+                    resultMessages[0].textContent = 'Correcto. Preparando siguiente fase...';
+                    resultMessages[0].style.color = '#4CAF50';
+                    setTimeout(() => {
+                        phase2.classList.add('fade-out');
+                        setTimeout(() => {
+                            phase2.classList.add('hidden');
+                            phase3.classList.remove('hidden');
+                            phase3.classList.add('fade-in');
+                        }, 500);
+                    }, 1500);
+                } else {
+                    resultMessages[0].textContent = 'Respuesta incorrecta';
+                    resultMessages[0].style.color = '#ff6b6b';
+                }
+            });
+        });
+
+        checkBtn.addEventListener('click', () => {
+            const answer = input.value.toLowerCase().trim();
+            if (answer === 'laia') {
+                resultMessages[1].textContent = 'Correcto. Preparando siguiente fase...';
+                resultMessages[1].style.color = '#4CAF50';
+                setTimeout(() => {
+                    phase3.classList.add('fade-out');
+                    setTimeout(() => {
+                        phase3.classList.add('hidden');
+                        phase4.classList.remove('hidden');
+                        phase4.classList.add('fade-in');
+                    }, 500);
+                }, 1500);
+            } else {
+                resultMessages[1].textContent = 'Respuesta incorrecta';
+                resultMessages[1].style.color = '#ff6b6b';
+            }
+        });
+
+        checkBtnPhase4.addEventListener('click', () => {
+            const answer = inputPhase4.value.toLowerCase().trim();
+            if (answer === 'los siete dia a la semana') {
+                resultMessages[2].textContent = 'Correcto. Preparando siguiente fase...';
+                resultMessages[2].style.color = '#4CAF50';
+                setTimeout(() => {
+                    phase4.classList.add('fade-out');
+                    setTimeout(() => {
+                        phase4.classList.add('hidden');
+                        phase5.classList.remove('hidden');
+                        phase5.classList.add('fade-in');
+                    }, 500);
+                }, 1500);
+            } else {
+                attempts--;
+                const hearts = '❤️ '.repeat(attempts);
+                attemptsLeft.textContent = hearts;
+                
+                if (attempts > 0) {
+                    hintMessage.textContent = 'Pista: son 6 palabras';
+                    resultMessages[2].textContent = 'Respuesta incorrecta';
+                    resultMessages[2].style.color = '#ff6b6b';
+                } else {
+                    resultMessages[2].textContent = 'Se acabaron los intentos';
+                    resultMessages[2].style.color = '#ff6b6b';
+                    checkBtnPhase4.disabled = true;
+                    inputPhase4.disabled = true;
+                }
+            }
+        });
+
+        document.querySelector('.exit-btn-final').addEventListener('click', () => {
+            phase5.innerHTML = '<h1>Está bien, lo entiendo. Gracias por llegar hasta aquí</h1>';
+        });
+
+        document.querySelector('.continue-btn-final').addEventListener('click', () => {
+            phase5.classList.add('fade-out');
+            setTimeout(() => {
+                phase5.classList.add('hidden');
+                const finalPhase = document.createElement('div');
+                finalPhase.className = 'card final-letter fade-in';
+                finalPhase.innerHTML = `
+                    <div class="letter-content">
+                        <p>Bueno, no sé si realmente te interesa saber que tengo para decirte o simplemente te ganó la curiosidad pero supongo que si llegaste hasta acá es por algo, ese es el punto de que haya tantas cosas, a veces da más paja hacer tantas cosas que saber el chisme como tal, pero bueno ese no es el tema.</p>
+                        
+                        <p>Realmente hay muchas cosas que quiero decirte porque siento que no ha concluido todo lo que quiero decirte o simplemente siento muchas cosas desde que pasó todo eso, es simplemente imposible dejar de pensarte, tampoco quiero subirte el ego pero da igual en verdad, lo peor que podría pasar ya pasó pero al menos estaré más tranquila de saber que pude decir todo y no me quede pensando en un que hubiera pasado si es que le hubiera dicho realmente lo que sentía.</p>
+                        
+                        <p>Claramente no puedo mentirte y decirte que estoy enamorada porque simplemente no es así pero estoy MUY segura de que siento algo que se asemeja porque en verdad no hay día que no quiera simplemente llamarte o algo, pienso en ti hasta en las cosas más tontas, realmente tenía planeado llegar a lima y llamarte y pedirte que nos veamos pero creo que es mejor hacerlo por acá para no estar preocupada de cómo escribirte o esas cosas.</p>
+                        
+                        <p>No puedo decir que me gustas porque necesito más cosas para decir eso, pero te juro que es algo que no se aleja mucho a eso, me mueves mucho el piso y realmente a pesar de todo me gustaría hacer las cosas bien contigo pero no puedo hacer las cosas yo sola, por más de que me tengas tan mal, no podría, si sientes algo honesto por mi, dilo porque en verdad es la última vez que te voy a buscar de esta manera, si sientes algo similar dímelo, y si no es así está bien, me quedo tranquila porque me quedé hasta el último y fui muy sincera contigo, no me guardé nada.</p>
+                        
+                        <p>Te quiero fabiana, te quiero mucho, gracias por todo.</p>
+                        
+                        <p class="post-script">Lo bueno de saber programar es que cuando aprietes el botón de abajo, vas a tener 5 segundos hasta que se elimine toda la página, no me gusta tener evidencia de que soy medio rogona jajajaj, bye chiqui</p>
+                    </div>
+                    <button class="destroy-btn">Entendido</button>
+                    <div class="timer hidden"></div>
+                `;
+                document.querySelector('.container').appendChild(finalPhase);
+
+                const destroyBtn = finalPhase.querySelector('.destroy-btn');
+                const timer = finalPhase.querySelector('.timer');
+                
+                destroyBtn.addEventListener('click', () => {
+                    destroyBtn.disabled = true;
+                    timer.classList.remove('hidden');
+                    let timeLeft = 5;
+                    
+                    const countdown = setInterval(() => {
+                        timer.textContent = timeLeft;
+                        timeLeft--;
+                        
+                        if (timeLeft < 0) {
+                            clearInterval(countdown);
+                            document.body.innerHTML = '';
+                            document.body.style.background = '#000';
+                        }
+                    }, 1000);
+                });
+            }, 500);
+        });
+    </script>
+</body>
+</html>
